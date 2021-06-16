@@ -1,34 +1,67 @@
-import React from 'react';
-import { BrowserRouter, Route, Switch, Redirect, Link  } from 'react-router-dom';
-import Home from './pages/Home';
-import SignUp from './pages/SignUp'
-import SignIn from './pages/SignIn';
-import MyPage from './pages/MyPage';
-import Modify from './pages/Modify';
-import NotFound from './pages/NotFound';
+import React, { Component } from "react";
+import Main from "./components/Main";
+import Nav from "./components/Nav";
+import "./App.css";
+const axios = require("axios");
 
-export default class App extends React.Component {
-  state = {
-    isLogin: true,
-    userInfo: null,
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLoading: true,
+      webtoons: [],
+    };
+    this.getToons = this.getToons.bind(this);
+  }
+  getToons() {
+    return axios
+      .get("http://ec2-13-124-157-37.ap-northeast-2.compute.amazonaws.com/", {
+        "content-type": "application/json",
+        credentials: true,
+      })
+      .then((data) => {
+        console.log("응답", data.status);
+        console.log("데이터실험", data.data);
+        this.setState({ webtoons: data.data, isLoading: false });
+      });
+  }
+
+  componentDidMount() {
+    this.getToons();
   }
 
   render() {
+    const { isLoading, webtoons } = this.state;
     return (
-      <div>
-          <BrowserRouter>
-            <Switch>
-              <Route exact path="/" component={Home} />
-              <Route exact path="/signup" component={SignUp} />
-              <Route exact path="/signin" component={SignIn} />
-              <Route exact path="/mypage" component={MyPage} />
-              <Route exact path="/mypage/modify" component={Modify} />
-              <Route exact path="/404" component={NotFound} />
-              <Redirect from ="*" to="/404" />
-            </Switch>
-          </BrowserRouter>
-      </div>
+      <section className="container">
+        {" "}
+        {isLoading ? (
+          <div className="loader">
+            <span className="loader_text">Loading...</span>
+          </div>
+        ) : (
+          <div>
+            <div>
+              <Nav />
+            </div>
+            <div className="webtoons">
+              {webtoons.map((webtoon, idx) => (
+                <Main
+                  key={idx}
+                  image={webtoon.image}
+                  title={webtoon.title}
+                  author={webtoon.author}
+                  ratings={webtoon.ratings}
+                  ratings_percent={webtoon.ratings_percent}
+                  link={webtoon.link}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+      </section>
     );
   }
-  
 }
+
+export default App;
