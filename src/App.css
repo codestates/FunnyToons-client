@@ -1,38 +1,145 @@
-.App {
-  text-align: center;
+* {
+  box-sizing: border-box;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  background-color: #eff3f7;
+  height: 100%;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+html,
+body,
+#root,
+.container {
+  height: 100%;
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  background-color: #fdffbc;
 }
 
-.App-link {
-  color: #61dafb;
+.header {
+  width: 100%;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.loader {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.webtoons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 50px;
+  padding-top: 70px;
+  width: 100%;
+}
+
+.webtoons .webtoon {
+  width: 45%;
+  background-color: white;
+  margin-bottom: 70px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  font-weight: 300;
+  padding: 20px;
+  border-radius: 5px;
+  color: #b2b3bc;
+  box-shadow: 0 13px 27px -5px rgba(50, 50, 93, 0.25),
+    0 8px 16px -8px rgba(0, 0, 0, 0.3), 0 -6px 16px -6px rgba(0, 0, 0, 0.025);
+}
+
+.webtoon image {
+  position: relative;
+  top: -50px;
+  max-width: 150px;
+  margin-right: 30px;
+  box-shadow: 0 30px 60px -12px rgba(50, 50, 93, 0.25),
+    0 18px 36px -18px rgba(0, 0, 0, 0.3), 0 -12px 36px -8px rgba(0, 0, 0, 0.025);
+}
+
+.webtoon_img {
+  width: 180px;
+}
+
+.webtoon_data {
+  width: 230px;
+  justify-content: center;
+}
+
+.webtoon .webtoon_title,
+.webtoon h5 {
+  margin: 0;
+  font-weight: 300;
+}
+
+.webtoon .webtoon_title {
+  margin-bottom: 5px;
+  font-size: 24px;
+  color: #2c2c2c;
+}
+
+.webtoon h5 {
+  color: #a4a8c9;
+}
+
+.header {
+  width: 100%;
+  height: 200px;
+  border-bottom: 1px solid #333;
+}
+
+.btn {
+  /* height: 34px; */
+  /* background: #eee linear-gradient(to bottom, #fcfcfc, #eee); */
+  /* border: 1px solid #d5d5d5; */
+  /* boder-radius: 4px; */
+  display: inline-flex;
+  align-items: center;
+  padding: 0 12px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1,5;
+  cursor: pointer;
+  box-sizing: border-box;
+  position: relative;
+  float: right;
+  color: #333;
+}
+
+.btn:hover::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.07);
+}
+
+.loginBtn,
+.signUpBtn {
+  width: 75px;
+  display: inline-flex;
+  justify-content: center;
+  float: right;
+  margin-right: 5px;
+  align-items: flex-end;
+  border: 1px solid #b8b836;
+  color: rgb(67, 67, 67);
+  font-weight: bolder;
+  background: #a5a532 linear-gradient(#ddd970, #aeaa2e);
+}
+
+.signUpBtn {
+  margin-right: 50px;
 }
