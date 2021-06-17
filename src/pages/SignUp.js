@@ -1,13 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import axios from 'axios';
 
-// axios.defaults.withCredentials = true;
+axios.defaults.withCredentials = true;
 export default class Signup extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       email: "",
       password: "",
+      password_confirm: "",
       nickname: "",
       errorMessage: ""
     };
@@ -19,18 +21,37 @@ export default class Signup extends React.Component {
   };
 
   handleSignup = () => {
-    const { email, password, nickname } = this.state;
-    if (!email || !password || !nickname) {
+    const { email, password, password_confirm, nickname } = this.state;
+    if (!email || !password || !password_confirm || !nickname) {
       this.setState({
-        errorMessage: "모든 항목은 필수입니다"
+        errorMessage: "모두 입력 하셨나요?"
       });
       return;
-    }
-    else {
+    } else if (password !== password_confirm) {
+      this.setState({
+        errorMessage: "비밀번호가 달라요!"
+      });
+      return;
+    } else {
       this.setState({
         errorMessage: ""
       });
     }
+    return axios
+      .post("http://ec2-3-36-89-52.ap-northeast-2.compute.amazonaws.com/user/signUp", {
+        email: email,
+        password: password,
+        password_confirm: password_confirm,
+        nickname: nickname,
+      })
+      .then((res) => {
+        console.log(res.data);
+        this.props.history.push('/');
+      })
+      .catch((err) => {
+        alert("signUp failed");
+        console.log(err);
+      });
   }
 
   render() {
@@ -64,11 +85,11 @@ export default class Signup extends React.Component {
               <div>비밀번호 확인</div>
               <input
                 type="password"
-                onChange={this.handleInputValue("password")}
+                onChange={this.handleInputValue("password_confirm")}
               />
             </div>
             <div>
-              <Link to='/signin'>이미 아이디가 있으신가요?</Link>
+              <Link to='/'>이미 아이디가 있으신가요?</Link>
             </div>
             <button
               className="btn-signup"

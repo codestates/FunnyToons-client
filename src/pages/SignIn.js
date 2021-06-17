@@ -1,68 +1,88 @@
-import React from 'react';
-import { Link } from "react-router-dom";
+import React from "react";
+import { Link, withRouter } from "react-router-dom";
+import axios from "axios";
 
-
-export default class Signin extends React.Component {
+class Signin extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       email: "",
+      nickname: "",
       password: "",
-      errorMessage: ""
-    }
+      password_confirm: "",
+      errorMessage: "",
+    };
     this.handleInputValue = this.handleInputValue.bind();
   }
 
   handleInputValue = (key) => (e) => {
     this.setState({
-      [key]: e.target.value
+      [key]: e.target.value,
     });
-  }
+  };
 
-  handleSignin = () => {
-    const { handleResponseSuccess } = this.props;
+  handleSignin = async () => {
     const { email, password } = this.state;
 
-    if(!email || !password) {
+    if (!email || !password ) {
       this.setState({
-        errorMessage: "이메일과 비밀번호를 확인하세요"
+        errorMessage: "이메일과 비밀번호가 틀렸어요~!",
       });
       return;
     } else {
-      this.setState({
-        errorMessage: ""
+      await axios
+      .post(
+        "http://ec2-3-36-89-52.ap-northeast-2.compute.amazonaws.com/user/signIn",
+        {
+          email: email,
+          password: password,
+        },
+        {
+          "Content-Type": "application/json"
+        }
+      )
+      .then((res) => {
+        this.props.history.push("/home");
+      })
+      .catch((err) => {
+        alert("SignIn failed");
+        console.log(err);
       });
     }
-  }
+  };
 
   render() {
-    return(
+    return (
       <div>
         <div>
           <h1>로그인</h1>
           <form onSubmit={(e) => e.preventDefault()}>
             <div>E-mail</div>
-            <input 
-              type="email"
-              onChange={this.handleInputValue("email")}
-            />
+            <input type="email" onChange={this.handleInputValue("email")} />
             <div>비밀번호</div>
             <input
               type="password"
               onChange={this.handleInputValue("password")}
             />
             <div />
-            <button className="btn-signin" type="submit" onClick={this.handleSignin}>
+            <button
+              className="btn btn-signin"
+              type="submit"
+              onClick={this.handleSignin}
+            >
               로그인
             </button>
             <span className="join">
               <Link to="/signup">
                 <button className="btn-to-signup">회원가입</button>
-              </Link>  
+              </Link>
             </span>
           </form>
         </div>
       </div>
-    )
+    );
   }
 }
+
+// export default Signin;
+export default withRouter(Signin);
